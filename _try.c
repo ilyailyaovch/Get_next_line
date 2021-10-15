@@ -19,7 +19,7 @@ char	*ft_get_buff_line(int fd, char *line)
 			return (NULL);
 		}
 		buff[bytes] = '\0';
-		line = ft_strjoin(line, buff); //Adding buff to line until the end of file
+		line = ft_strjoin(line, buff); //Adding buff to line until there is no '\n'
 	}
 	free (buff);
 	return (line);
@@ -69,11 +69,7 @@ char	*ft_get_next_buff_line(char *remain)
 		return (NULL);
 	len_line = len_line + 1;
 	while (remain[len_line])
-	{
-		str[coun] = remain[len_line];
-		coun++;
-		len_line++;
-	}
+		str[coun++] = remain[len_line++];
 	str[coun] = '\0';
 	free (remain);
 	return (str);
@@ -116,9 +112,9 @@ int main(void)
 	printf ("--------------------------------------\n");
 
 	
-	while (i < 5)
+	while (i < 10)
 	{
-		line = get_next_line(fd3);
+		line = get_next_line(fd1);
 		printf("line [%02d]: %s\n", i, line);
 		free(line);
 		i++;

@@ -14,6 +14,7 @@ NAME = get-next-line
 
 FLAGS = -Wall -Wextra -Werror
 DEFINE = -D
+SIZE = 1000
 
 SRC = 	_try.c\
 		get_next_line_utils.c\
@@ -21,4 +22,4 @@ SRC = 	_try.c\
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLAGS) $(DEFINE) BUFFER_SIZE=42 $(SRC)
+	gcc $(FLAGS) $(DEFINE) BUFFER_SIZE=$(SIZE) $(SRC)
