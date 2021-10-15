@@ -10,9 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = get_
+NAME = get-next-line
+
+FLAGS = -Wall -Wextra -Werror
+DEFINE = -D
+
+SRC = 	_try.c\
+		get_next_line_utils.c\
 
 all: $(NAME)
 
 $(NAME):
-	clang -Wall -Wextra -Werror -D BUFFER_SIZE=42 _try.c -o _try.out
+	gcc $(FLAGS) $(DEFINE) BUFFER_SIZE=42 $(SRC)
