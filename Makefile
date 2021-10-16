@@ -16,7 +16,7 @@ FLAGS = -Wall -Wextra -Werror
 DEFINE = -D
 SIZE = 1000
 
-SRC = 	_try.c\
+SRC = 	_main.c\
 		get_next_line_utils.c\
 
 all: $(NAME)

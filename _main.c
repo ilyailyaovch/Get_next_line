@@ -84,11 +84,11 @@ char	*get_next_line(int fd)
 		remain = "\0";
 	if (fd <= -1 || BUFFER_SIZE <= 0)
 		return (NULL);
-	remain = ft_get_buff_line(fd, remain); //Adding evwrything
+	remain = ft_get_buff_line(fd, remain); //Adding everything
 	if (!remain)
 		return (NULL);
 	line = ft_find_real_line(remain); //Looking for real line
-	remain = ft_get_next_buff_line(remain); //Cut real line and taking remains
+	remain = ft_get_next_buff_line(remain); //Cut real line and saving remains
 	return (line);
 }
 
@@ -114,8 +114,8 @@ int main (void)
 	
 	while (i < 10)
 	{
-		line = get_next_line(fd1);
-		printf("line [%02d]: %s\n", i, line);
+		line = get_next_line(fd2);
+		printf("line %d: %s\n", i, line);
 		free(line);
 		i++;
 	}
