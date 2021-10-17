@@ -6,7 +6,7 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 19:50:13 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/12 19:50:14 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/17 19:44:22 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	dst[coun1 + coun2] = '\0';
 	return (dst);
 }
+
+
+
 
 char	*ft_strrchr(char *str, int ch)
 {

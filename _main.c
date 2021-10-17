@@ -1,10 +1,13 @@
 #include "get_next_line.h"
+
 #include <stdio.h>
 
+
+
 char	*ft_get_buff_line(int fd, char *line)
-{	
+{
 	char	*buff;
-	int		bytes;	
+	int		bytes;
 
 	bytes = 1;
 	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -33,6 +36,8 @@ char	*ft_find_real_line(char *remain)
 
 	coun = 0;
 	len_line = 0;
+	if (!remain[0])
+		return (NULL);
 	while (remain[len_line] && remain[len_line] != '\n')
 		len_line++;
 	line = (char *)malloc(sizeof(char) * (len_line + 1 + 1));
@@ -44,8 +49,11 @@ char	*ft_find_real_line(char *remain)
 		coun++;
 	}
 	if (remain[coun] == '\n')
-		line[coun] = '\n';
-	line[coun++] = '\0';
+	{
+		line[coun] = remain[coun];
+		coun++;
+	}
+	line[coun] = '\0';
 	return (line);
 }
 
@@ -64,9 +72,12 @@ char	*ft_get_next_buff_line(char *remain)
 		free(remain);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line + 1));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line));
 	if (!str)
+	{
+		free (remain);
 		return (NULL);
+	}
 	len_line = len_line + 1;
 	while (remain[len_line])
 		str[coun++] = remain[len_line++];
@@ -82,7 +93,7 @@ char	*get_next_line(int fd)
 
 	if (!remain) //If there is no remain at first time
 		remain = "\0";
-	if (fd <= -1 || BUFFER_SIZE <= 0)
+	if (fd == -1 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	remain = ft_get_buff_line(fd, remain); //Adding everything
 	if (!remain)
@@ -98,6 +109,7 @@ int main (void)
 	int fd2;
 	int fd3;
 	int i = 1;
+	//int j = 1;
 	char *line;
 
 	printf ("--------------------------------------\n");
@@ -112,13 +124,18 @@ int main (void)
 	printf ("--------------------------------------\n");
 
 	
-	while (i < 10)
+	while (i < 3)
 	{
 		line = get_next_line(fd2);
-		printf("line %d: %s\n", i, line);
+		printf("%s", line);
 		free(line);
 		i++;
 	}
-	close(fd1);
+	
+	// while (j < 5)
+	// {
+	// 	printf("%s", get_next_line(fd2));
+	// 	j++;
+	// }
 	return (0);
 }

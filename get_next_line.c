@@ -6,16 +6,16 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 18:42:28 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/12 19:02:06 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/17 19:44:19 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 char	*ft_get_buff_line(int fd, char *line)
-{	
+{
 	char	*buff;
-	int		bytes;	
+	int		bytes;
 
 	bytes = 1;
 	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -44,6 +44,8 @@ char	*ft_find_real_line(char *remain)
 
 	coun = 0;
 	len_line = 0;
+	if (!remain[0])
+		return (NULL);
 	while (remain[len_line] && remain[len_line] != '\n')
 		len_line++;
 	line = (char *)malloc(sizeof(char) * (len_line + 1 + 1));
@@ -55,8 +57,11 @@ char	*ft_find_real_line(char *remain)
 		coun++;
 	}
 	if (remain[coun] == '\n')
-		line[coun] = '\n';
-	line[coun++] = '\0';
+	{
+		line[coun] = remain[coun];
+		coun++;
+	}
+	line[coun] = '\0';
 	return (line);
 }
 
@@ -75,9 +80,12 @@ char	*ft_get_next_buff_line(char *remain)
 		free(remain);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line + 1));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line));
 	if (!str)
+	{
+		free (remain);
 		return (NULL);
+	}
 	len_line = len_line + 1;
 	while (remain[len_line])
 		str[coun++] = remain[len_line++];
@@ -93,12 +101,17 @@ char	*get_next_line(int fd)
 
 	if (!remain) //If there is no remain at first time
 		remain = "\0";
-	if (fd <= -1 || BUFFER_SIZE <= 0)
+	if (fd == -1 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	remain = ft_get_buff_line(fd, remain); //Adding evwrything
+	remain = ft_get_buff_line(fd, remain); //Adding everything
 	if (!remain)
 		return (NULL);
 	line = ft_find_real_line(remain); //Looking for real line
-	remain = ft_get_next_buff_line(remain); //Cut real line and taking remains
+	if (!line)
+	{
+		free(remain);
+		return (line);
+	}
+	remain = ft_get_next_buff_line(remain); //Cut real line and saving remains
 	return (line);
 }
