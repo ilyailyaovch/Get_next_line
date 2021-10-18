@@ -6,7 +6,7 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 19:50:13 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/18 12:20:40 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/18 14:07:22 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,22 @@ size_t	ft_strlen(char *str)
 	while (str[coun] != '\0')
 		coun++;
 	return (coun);
+}
+
+int	ft_strchr(char *str, int ch)
+{
+	int	coun;
+
+	coun = 0;
+	if (!str)
+		return (0);
+	while (str[coun] != '\0')
+	{
+		if (str[coun] == (char)ch)
+			return (1);
+		coun++;
+	}
+	return (0);
 }
 
 char	*ft_strjoin(char *mem, char *buf)
@@ -49,20 +65,4 @@ char	*ft_strjoin(char *mem, char *buf)
 	str[len] = '\0';
 	free (mem);
 	return (str);
-}
-
-int	ft_strchr(char *str, int ch)
-{
-	int	coun;
-
-	coun = 0;
-	if (!str)
-		return (0);
-	while (str[coun] != '\0')
-	{
-		if (str[coun] == (char)ch)
-			return (1);
-		coun++;
-	}
-	return (0);
 }

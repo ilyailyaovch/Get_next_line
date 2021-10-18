@@ -6,7 +6,7 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 18:42:28 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/18 11:58:23 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/18 14:18:53 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_get_buff_line(int fd, char *line)
 			return (NULL);
 		}
 		buff[bytes] = '\0';
-		line = ft_strjoin(line, buff); //Adding buff to line until there is no '\n'
+		line = ft_strjoin(line, buff);
 	}
 	free (buff);
 	return (line);
@@ -98,15 +98,15 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	if (!memory) //If there is no remain at first time
+	if (!memory)
 	{
 		memory = (char *)malloc(sizeof(char));
 		memory[0] = '\0';
 	}
-	memory = ft_get_buff_line(fd, memory); //Adding everything
+	memory = ft_get_buff_line(fd, memory);
 	if (!memory)
 		return (NULL);
-	line = ft_find_real_line(memory); //Looking for real line
-	memory = ft_get_next_buff_line(memory); //Cut real line and saving remains
+	line = ft_find_real_line(memory);
+	memory = ft_get_next_buff_line(memory);
 	return (line);
 }
