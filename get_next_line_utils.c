@@ -6,66 +6,63 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 19:50:13 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/17 19:44:22 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/18 12:20:40 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_strlen(char *str)
+size_t	ft_strlen(char *str)
 {
-	unsigned int	coun;
+	size_t	coun;
 
 	coun = 0;
+	if (!str)
+		return (0);
 	while (str[coun] != '\0')
-	{
 		coun++;
-	}
 	return (coun);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *mem, char *buf)
 {
-	unsigned int	len;
-	unsigned int	coun1;
-	unsigned int	coun2;
-	char			*dst;
+	int			coun1;
+	int			coun2;
+	int			len;
+	char		*str;
 
-	if (!s1 || !s2)
+	if (!mem || !buf)
+		return (NULL);
+	len = ft_strlen(mem) + ft_strlen(buf);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
 		return (NULL);
 	coun1 = 0;
 	coun2 = 0;
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	dst = (char *)malloc(len * sizeof(char));
-	if (!dst)
-		return (NULL);
-	while (s1[coun1])
+	while (mem[coun1] != '\0')
 	{
-		dst[coun1] = s1[coun1];
+		str[coun1] = mem[coun1];
 		coun1++;
 	}
-	while (s2[coun2])
-	{
-		dst[coun1 + coun2] = s2[coun2];
-		coun2++;
-	}
-	dst[coun1 + coun2] = '\0';
-	return (dst);
+	while (buf[coun2] != '\0')
+		str[coun1++] = buf[coun2++];
+	str[len] = '\0';
+	free (mem);
+	return (str);
 }
 
-
-
-
-char	*ft_strrchr(char *str, int ch)
+int	ft_strchr(char *str, int ch)
 {
 	int	coun;
 
-	coun = ft_strlen(str);
-	while (coun >= 0)
+	coun = 0;
+	if (!str)
+		return (0);
+	while (str[coun] != '\0')
 	{
-		if (*(str + coun) == (unsigned char)ch)
-			return ((char *)(str + coun));
-		coun--;
+		if (str[coun] == (char)ch)
+			return (1);
+		coun++;
 	}
-	return (NULL);
+	return (0);
 }

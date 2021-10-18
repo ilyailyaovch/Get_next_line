@@ -6,7 +6,7 @@
 /*   By: pleoma <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 18:42:28 by pleoma            #+#    #+#             */
-/*   Updated: 2021/10/17 19:44:19 by pleoma           ###   ########.fr       */
+/*   Updated: 2021/10/18 11:58:23 by pleoma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ char	*ft_get_buff_line(int fd, char *line)
 	int		bytes;
 
 	bytes = 1;
-	buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
-	while (!ft_strrchr(line, '\n') && bytes != 0)
+	while ((ft_strchr(line, '\n') != 1) && (bytes != 0))
 	{
 		bytes = read(fd, buff, BUFFER_SIZE);
 		if (bytes == -1)
@@ -36,7 +36,7 @@ char	*ft_get_buff_line(int fd, char *line)
 	return (line);
 }
 
-char	*ft_find_real_line(char *remain)
+char	*ft_find_real_line(char *memory)
 {
 	int		coun;
 	int		len_line;
@@ -44,21 +44,21 @@ char	*ft_find_real_line(char *remain)
 
 	coun = 0;
 	len_line = 0;
-	if (!remain[0])
+	if (!memory[0])
 		return (NULL);
-	while (remain[len_line] && remain[len_line] != '\n')
+	while (memory[len_line] && memory[len_line] != '\n')
 		len_line++;
 	line = (char *)malloc(sizeof(char) * (len_line + 1 + 1));
 	if (!line)
 		return (NULL);
-	while (remain[coun] && remain[coun] != '\n')
+	while (memory[coun] && memory[coun] != '\n')
 	{
-		line[coun] = remain[coun];
+		line[coun] = memory[coun];
 		coun++;
 	}
-	if (remain[coun] == '\n')
+	if (memory[coun] == '\n')
 	{
-		line[coun] = remain[coun];
+		line[coun] = memory[coun];
 		coun++;
 	}
 	line[coun] = '\0';
@@ -80,12 +80,9 @@ char	*ft_get_next_buff_line(char *remain)
 		free(remain);
 		return (NULL);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(remain) - len_line + 1));
 	if (!str)
-	{
-		free (remain);
 		return (NULL);
-	}
 	len_line = len_line + 1;
 	while (remain[len_line])
 		str[coun++] = remain[len_line++];
@@ -97,21 +94,19 @@ char	*ft_get_next_buff_line(char *remain)
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static char		*remain;
+	static char		*memory;
 
-	if (!remain) //If there is no remain at first time
-		remain = "\0";
-	if (fd == -1 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	remain = ft_get_buff_line(fd, remain); //Adding everything
-	if (!remain)
-		return (NULL);
-	line = ft_find_real_line(remain); //Looking for real line
-	if (!line)
+	if (!memory) //If there is no remain at first time
 	{
-		free(remain);
-		return (line);
+		memory = (char *)malloc(sizeof(char));
+		memory[0] = '\0';
 	}
-	remain = ft_get_next_buff_line(remain); //Cut real line and saving remains
+	memory = ft_get_buff_line(fd, memory); //Adding everything
+	if (!memory)
+		return (NULL);
+	line = ft_find_real_line(memory); //Looking for real line
+	memory = ft_get_next_buff_line(memory); //Cut real line and saving remains
 	return (line);
 }
